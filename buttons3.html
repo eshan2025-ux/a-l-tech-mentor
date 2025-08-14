@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #00a8ff;
+            --primary-dark: #0097e6;
+            --primary-light: #33b9ff;
+            --dark: #0a0e17;
+            --darker: #06090f;
+            --card-bg: #131a2d;
+            --light: #f0f4f8;
+            --gray: #8a94a6;
+            --success: #00e676;
+            --danger: #ff3d71;
+            --card-radius: 16px;
+            --glow: 0 0 15px rgba(0, 168, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c1445 0%, #1a237e 50%, #0c1445 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+            padding: 0;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(41, 121, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(101, 31, 255, 0.15) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(15, 20, 30, 0.95);
+            border-bottom: 2px solid var(--primary);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-right: 15px;
+            position: relative;
+            z-index: 2;
+            text-shadow: var(--glow);
+            animation: pulse 2s infinite;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), #4cd3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            animation: logoGlow 3s infinite alternate;
+        }
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.2) 0%, rgba(0, 168, 255, 0) 70%);
+            animation: rotate 15s linear infinite;
+            z-index: 1;
+        }
+
+        nav {
+            flex-grow: 1;
+            transition: left 0.4s;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav li {
+            margin-right: 1.5rem;
+        }
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        nav a i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        nav a:hover, nav a.active {
+            background: rgba(0, 168, 255, 0.2);
+            color: var(--primary);
+        }
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 20px;
+            margin: auto;
+        }
+        .tech-button {
+            width: 280px;
+            background: linear-gradient(145deg, #1a237e, #283593);
+            border: none;
+            border-radius: 12px;
+            padding: 25px 20px;
+            color: #e3f2fd;
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.5s);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        .tech-button:nth-child(1) { --delay: 0; --color: #29b6f6; }
+        .tech-button:nth-child(2) { --delay: 1; --color: #7c4dff; }
+        .tech-button:nth-child(3) { --delay: 2; --color: #00e5ff; }
+        .tech-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        .tech-button:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        .tech-button:hover::before {
+            transform: scaleX(1);
+        }
+        .tech-button:hover .button-icon {
+            transform: translateY(-5px) rotate(10deg);
+            text-shadow: 0 0 15px var(--color);
+        }
+        .button-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+            color: var(--color);
+        }
+        .button-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+        .button-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--color);
+            margin: 12px auto;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .tech-button:hover .button-title::after {
+            width: 70px;
+        }
+        .tech-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            border-bottom: 2px solid var(--color);
+            border-right: 2px solid var(--color);
+            border-radius: 0 0 12px 0;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        .tech-button:hover::after {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            opacity: 0.15;
+        }
+        .pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: var(--color);
+            opacity: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: pulse 3s infinite;
+            animation-delay: calc(var(--delay) * 0.5s + 1s);
+            z-index: -1;
+        }
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(33, 150, 243, 0.5);
+            animation: particleAnim 10s linear infinite;
+        }
+
+        /* Animations */
+        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+        @keyframes particleAnim {
+            0% {transform:translateY(0) translateX(0) rotate(0deg); opacity:0;}
+            10%{opacity:1;}
+            90%{opacity:0.5;}
+            100%{transform:translateY(-100vh) translateX(100px) rotate(360deg);opacity:0;}
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 5px rgba(0, 168, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(0, 168, 255, 0.8); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 950px) {
+            .button-container { gap: 20px; }
+            .tech-button { width: 240px; height: 180px; }
+            .button-icon { font-size: 3rem; }
+            .button-title { font-size: 1.5rem; }
+        }
+        @media (max-width: 860px) {
+            .menu-btn {
+                display: block;
+                position: absolute;
+                right: 2rem;
+            }
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 260px;
+                height: 100vh;
+                background: rgba(15, 20, 30, 0.98);
+                z-index: 99;
+                transition: all 0.4s cubic-bezier(.77,0,.18,1);
+                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+                padding-top: 80px;
+            }
+            nav.active {left: 0;}
+            nav ul {flex-direction: column; padding: 20px;}
+            nav li {margin: 0 0 1rem 0; width: 100%;}
+            nav a {padding: 0.8rem 1.2rem; font-size: 1.1rem; border-radius: 12px;}
+        }
+        @media (max-width: 768px) {
+            .button-container { flex-direction: column; align-items: center; }
+            .tech-button { width: 280px; height: 160px; }
+            .button-icon { font-size: 2.8rem; margin-bottom: 12px; }
+            .button-title { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .tech-button { width: 100%; max-width: 280px; height: 140px; padding: 20px 15px; }
+            .button-icon { font-size: 2.5rem; margin-bottom: 10px; }
+            .button-title { font-size: 1.3rem; }
+            .logo-text { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with menu added here -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-graduation-cap logo-icon"></i>
+            <div class="logo-text">A/L Tech Mentor</div>
+        </div>
+        
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#features"><i class="fas fa-star"></i> Features</a></li>
+                <li><a href="index.html#subject"><i class="fas fa-book"></i> Subjects</a></li>
+                <li><a href="buttons1.html"><i class="fas fa-file-alt"></i> Past Papers</a></li>
+                <li><a href="buttons2.html"><i class="fas fa-file-signature"></i> Marking Scheme</a></li>
+                <li><a href="buttons3.html"><i class="fas fa-sticky-note"></i> Short Notes</a></li>
+                <li><a href="buttonsyt.html"><i class="fas fa-chalkboard-teacher"></i> Youtube Lessons</a></li>
+            </ul>
+        </nav>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <div class="particles" id="particles"></div>
+    
+    <div class="button-container">
+        <div class="tech-button">
+            <div class="pulse"></div>
+            <i class="fas fa-atom button-icon"></i>
+            <div class="button-title">තාක්ෂණවේදය සදහා විද්‍යාව</div>
+        </div>
+        <div class="tech-button">
+            <div class="pulse"></div>
+            <i class="fas fa-network-wired button-icon"></i>
+            <div class="button-title">තොරතුරු හා සන්නිවේදන තාක්ෂණය</div>
+        </div>
+        <div class="tech-button">
+            <div class="pulse"></div>
+            <i class="fas fa-cogs button-icon"></i>
+            <div class="button-title">ඉන්ජිනේරු තාක්ෂණවේදය</div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle and responsive logic (from index.html)
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const navMenu = document.getElementById('navMenu');
+            // Set initial menu icon
+            function setMenuIcon() {
+                if (navMenu.classList.contains('active')) {
+                    menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.body.style.overflow = '';
+                }
+            }
+            // On resize, always close menu and reset icon
+            function handleResize() {
+                navMenu.classList.remove('active');
+                setMenuIcon();
+            }
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            menuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                setMenuIcon();
+            });
+            // Close menu when clicking on links (mobile only)
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 860) {
+                        navMenu.classList.remove('active');
+                        setMenuIcon();
+                    }
+                });
+            });
+            // Create background particles
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 8 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const animationDelay = Math.random() * 5;
+                const hue = Math.floor(Math.random() * 40) + 180;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                particle.style.backgroundColor = `hsla(${hue}, 70%, 60%, ${Math.random() * 0.3 + 0.1})`;
+                particlesContainer.appendChild(particle);
+            }
+            // Add hover effect with JavaScript for extra interactivity
+            const buttons = document.querySelectorAll('.tech-button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
