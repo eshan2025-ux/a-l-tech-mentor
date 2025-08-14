@@ -3,210 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A/L Tech Mentor - Past Papers</title>
+    <title>Past Papers Download - A/L Tech Mentor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #00a8ff;
+            --primary-dark: #0097e6;
+            --primary-light: #33b9ff;
+            --dark: #0a0e17;
+            --darker: #06090f;
+            --card-bg: #131a2d;
+            --light: #f0f4f8;
+            --gray: #8a94a6;
+            --success: #00e676;
+            --danger: #ff3d71;
+            --card-radius: 16px;
+            --glow: 0 0 15px rgba(0, 168, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
+            padding: 0;
         }
-        
+
         header {
-            text-align: center;
-            margin: 30px 0;
+            background: rgba(15, 20, 30, 0.95);
+            border-bottom: 2px solid var(--primary);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             width: 100%;
         }
-        
-        h1 {
-            font-size: 2.8rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 2rem;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            max-width: 800px;
-            margin: 0 auto;
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-right: 15px;
+            position: relative;
+            z-index: 2;
+            text-shadow: var(--glow);
+            animation: pulse 2s infinite;
         }
-        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), #4cd3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            animation: logoGlow 3s infinite alternate;
+        }
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.2) 0%, rgba(0, 168, 255, 0) 70%);
+            animation: rotate 15s linear infinite;
+            z-index: 1;
+        }
+        nav {
+            flex-grow: 1;
+            transition: left 0.4s;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav li {
+            margin-right: 1.5rem;
+        }
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        nav a i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        nav a:hover, nav a.active {
+            background: rgba(0, 168, 255, 0.2);
+            color: var(--primary);
+        }
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        /* Download instructions notice */
         .download-notice {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px 20px;
+            background: rgba(56, 189, 248, 0.15);
+            border-left: 4px solid #38bdf8;
+            padding: 12px 20px;
             border-radius: 4px;
             margin: 20px auto 30px;
             max-width: 800px;
-            width: 100%;
-        }
-        
-        .notice-title {
+            width: 90%;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 600;
-            color: #0d47a1;
-            margin-bottom: 8px;
         }
-        
+        .download-notice i {
+            color: #38bdf8;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .download-notice p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive menu */
+        @media (max-width: 860px) {
+            .menu-btn {
+                display: block;
+                position: absolute;
+                right: 2rem;
+            }
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 260px;
+                height: 100vh;
+                background: rgba(15, 20, 30, 0.98);
+                z-index: 99;
+                transition: all 0.4s cubic-bezier(.77,0,.18,1);
+                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+                padding-top: 80px;
+            }
+            nav.active {left: 0;}
+            nav ul {flex-direction: column; padding: 20px;}
+            nav li {margin: 0 0 1rem 0; width: 100%;}
+            nav a {padding: 0.8rem 1.2rem; font-size: 1.1rem; border-radius: 12px;}
+            
+            .download-notice {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+                margin: 15px auto 25px;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin: 100px 0 40px;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        .title {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #60a5fa, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            max-width: 1200px;
+            max-width: 1000px;
             width: 100%;
-            margin: 0 auto 40px;
+            padding: 20px;
         }
-        
         .year-card {
-            background: white;
+            background: #1e293b;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            padding: 25px;
-            text-align: center;
-            position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            transform: translateY(0);
+            animation: float 4s infinite ease-in-out;
+            height: 200px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
-        
+        .year-card:nth-child(1) { animation-delay: 0s; }
+        .year-card:nth-child(2) { animation-delay: 0.2s; }
+        .year-card:nth-child(3) { animation-delay: 0.4s; }
+        .year-card:nth-child(4) { animation-delay: 0.6s; }
+        .year-card:nth-child(5) { animation-delay: 0.8s; }
+        .year-card:nth-child(6) { animation-delay: 1s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
         .year-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            background: #1e3a8a;
         }
-        
-        .pulse {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 12px;
-            height: 12px;
-            background: #4CAF50;
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-        
         .year {
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             font-weight: 700;
-            color: #2c3e50;
-            margin: 15px 0 25px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
         }
-        
         .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #2196F3 0%, #0d47a1 100%);
-            color: white;
-            padding: 12px 28px;
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 14px 25px;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 2px solid #38bdf8;
             border-radius: 50px;
-            text-decoration: none;
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-            margin-top: auto;
-            border: none;
             cursor: pointer;
-            width: fit-content;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            text-decoration: none;
         }
-        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(56, 189, 248, 0.2);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
         .download-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
-        
-        .download-btn:active {
-            transform: scale(0.98);
+        .download-btn:hover::before {
+            width: 100%;
         }
-        
-        .download-info {
-            font-size: 0.85rem;
-            color: #7f8c8d;
-            margin-top: 15px;
-            font-style: italic;
+        .download-btn i {
+            margin-right: 10px;
+            transition: all 0.3s ease;
         }
-        
+        .download-btn:hover i {
+            transform: translateY(-3px);
+        }
         .footer {
+            margin-top: 80px;
             text-align: center;
             padding: 25px;
-            color: #7f8c8d;
+            color: #94a3b8;
             font-size: 0.9rem;
-            max-width: 1200px;
+            border-top: 1px solid rgba(56, 189, 248, 0.1);
             width: 100%;
-            margin-top: auto;
-            border-top: 1px solid #e0e0e0;
+            max-width: 800px;
         }
-        
         .copyright {
-            font-weight: 600;
-            margin-top: 8px;
-            color: #2c3e50;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #64748b;
         }
-        
-        @media (max-width: 768px) {
+        .pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 0; }
+        }
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating-icon {
+            position: absolute;
+            color: rgba(56, 189, 248, 0.1);
+            font-size: 3rem;
+            z-index: 0;
+            animation: float-icon 6s infinite ease-in-out;
+        }
+        .icon-1 { top: 15%; left: 10%; animation-delay: 0s; }
+        .icon-2 { top: 25%; right: 15%; animation-delay: 1s; }
+        .icon-3 { bottom: 20%; left: 20%; animation-delay: 2s; }
+        .icon-4 { bottom: 30%; right: 25%; animation-delay: 3s; }
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 5px rgba(0, 168, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(0, 168, 255, 0.8); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (max-width: 900px) {
             .container {
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                gap: 20px;
+                grid-template-columns: repeat(2, 1fr);
             }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
+            .title { font-size: 2.5rem; }
         }
-        
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .container {
                 grid-template-columns: 1fr;
+                max-width: 500px;
             }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .year {
-                font-size: 1.8rem;
-            }
+            .title { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
+            .header { margin: 60px 0 30px; }
+            .year-card { height: 180px; }
+            .year { font-size: 2.5rem; }
+            .logo-text { font-size: 1.5rem; }
+            .download-btn { width: 180px; padding: 12px 20px; }
         }
     </style>
 </head>
 <body>
+    <!-- Fixed Navigation Menu -->
     <header>
-        <h1>A/L Tech Mentor Past Papers</h1>
-        <p class="subtitle">Comprehensive collection of past examination papers for educational purposes</p>
-    </header>
-    
-    <div class="download-notice">
-        <div class="notice-title">
-            <i class="fas fa-info-circle"></i>
-            <span>Download Instructions</span>
+        <div class="logo">
+            <i class="fas fa-graduation-cap logo-icon"></i>
+            <div class="logo-text">A/L Tech Mentor</div>
         </div>
-        <p>Files will open in a new tab. To download: 
-        <br>1. Right-click on the PDF 
-        <br>2. Select "Save As" 
-        <br>3. Choose save location</p>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#features"><i class="fas fa-star"></i> Features</a></li>
+                <li><a href="index.html#subjects"><i class="fas fa-star"></i> Subjects</a></li>
+                <li><a href="buttons1.html"><i class="fas fa-file-alt"></i> Past Papers</a></li>
+                <li><a href="buttons2.html"><i class="fas fa-file-signature"></i> Marking Scheme</a></li>
+                <li><a href="buttons3.html"><i class="fas fa-sticky-note"></i> Short Notes</a></li>
+                <li><a href="buttonsyt.html"><i class="fas fa-chalkboard-teacher"></i> Youtube Lessons</a></li>
+            </ul>
+        </nav>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <!-- Floating icons -->
+    <i class="fas fa-file-alt floating-icon icon-1"></i>
+    <i class="fas fa-download floating-icon icon-2"></i>
+    <i class="fas fa-book floating-icon icon-3"></i>
+    <i class="fas fa-graduation-cap floating-icon icon-4"></i>
+
+    <div class="header">
+        <h1 class="title">Past Papers Download</h1>
+        <p class="subtitle">Download examination papers from 2019 to 2024. All papers available in PDF format.</p>
+    </div>
+    
+    <!-- Download instructions -->
+    <div class="download-notice">
+        <i class="fas fa-info-circle"></i>
+        <p>Files will open in this window. To download: right-click the button → "Save link as" → Choose save location</p>
     </div>
 
     <div class="container">
@@ -214,48 +418,42 @@
             <div class="pulse"></div>
             <div class="year">2019</div>
             <a href="https://pastpapers.wiki/download/22920/2019-a-l/56862/2019-al-sft-past-paper-sinhala-medium.pdf" 
-               class="download-btn" 
-               target="_blank"
-               data-filename="2019-A-Level-Paper.pdf">
+               class="download-btn">
                 <i class="fas fa-download"></i> Download
             </a>
-            <div class="download-info">Sinhala Medium | SFT Paper</div>
         </div>
-
         <div class="year-card">
             <div class="pulse"></div>
             <div class="year">2020</div>
             <a href="https://pastpapers.wiki/download/22928/2020-a-l/56866/2020-a-l-sft-past-paper-sinhala-medium.pdf" 
-               class="download-btn" 
-               target="_blank"
-               data-filename="2020-A-Level-Paper.pdf">
+               class="download-btn">
                 <i class="fas fa-download"></i> Download
             </a>
-            <div class="download-info">Sinhala Medium | SFT Paper</div>
         </div>
-
         <div class="year-card">
             <div class="pulse"></div>
             <div class="year">2021(22)</div>
             <a href="https://pastpapers.wiki/download/14272/2021-a-l-past-papers/57935/2021-al-sft-past-paper-sinhala-medium-2.pdf" 
-               class="download-btn" 
-               target="_blank"
-               data-filename="2021-A-Level-Paper.pdf">
+               class="download-btn">
                 <i class="fas fa-download"></i> Download
             </a>
-            <div class="download-info">Sinhala Medium | SFT Paper</div>
         </div>
-
         <div class="year-card">
             <div class="pulse"></div>
             <div class="year">2022(23)</div>
             <a href="https://pastpapers.wiki/download/22285/2022-a-l-past-papers/70009/gce-advanced-level-2022-sft-sinhala-medium-paper.pdf" 
-               class="download-btn" 
-               target="_blank"
-               data-filename="2022-A-Level-Paper.pdf">
+               class="download-btn">
                 <i class="fas fa-download"></i> Download
             </a>
-            <div class="download-info">Sinhala Medium | SFT Paper</div>
+        </div>
+        <div class="year-card">
+            <div class="pulse"></div>
+            <div class="year">2023(24)</div>
+            <a href="#" 
+               class="download-btn" 
+               style="background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.3); color: rgba(56, 189, 248, 0.5); cursor: not-allowed;">
+                <i class="fas fa-clock"></i> Coming Soon
+            </a>
         </div>
     </div>
 
@@ -265,30 +463,66 @@
     </div>
 
     <script>
-        // Enhanced download experience
-        document.querySelectorAll('.download-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Add download tracking (analytics would go here)
-                const year = this.closest('.year-card').querySelector('.year').textContent;
-                console.log(`Download initiated for: ${year}`);
-                
-                // Show visual feedback
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                }, 1500);
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            function setMenuIcon() {
+                if (navMenu.classList.contains('active')) {
+                    menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            function handleResize() {
+                if (window.innerWidth > 860) {
+                    navMenu.classList.remove('active');
+                    setMenuIcon();
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            setMenuIcon();
+            
+            menuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                setMenuIcon();
+            });
+            
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 860) {
+                        navMenu.classList.remove('active');
+                        setMenuIcon();
+                    }
+                });
+            });
+            
+            // Enhanced download feedback
+            const downloadButtons = document.querySelectorAll('.download-btn:not([href="#"])');
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const year = this.closest('.year-card').querySelector('.year').textContent;
+                    const originalHTML = this.innerHTML;
+                    
+                    // Visual feedback
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                    this.style.backgroundColor = 'rgba(56, 189, 248, 0.2)';
+                    this.style.borderColor = 'transparent';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.style.backgroundColor = '';
+                        this.style.borderColor = '';
+                    }, 2000);
+                });
             });
         });
-        
-        // Add service worker for future caching capabilities
-        if('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                .catch(err => console.log('Service Worker not registered', err));
-            });
-        }
     </script>
 </body>
 </html>
